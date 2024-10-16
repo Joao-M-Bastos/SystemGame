@@ -22,6 +22,10 @@ public class Grid : MonoBehaviour
     int cellSize;
     Vector3 originPos;
 
+    public int Width => width;
+    public int Hight => hight;
+    public int CellSize => cellSize;
+
     private int[,] gridArray;
     private TextMesh[,] textMeshes;
 
@@ -38,15 +42,15 @@ public class Grid : MonoBehaviour
         DebugGrid();
     }
 
-    private Vector3 GetWorldPosition(int x, int z)
+    public Vector3 GetWorldPosition(int x, int y)
     {
-        return new Vector3(x, 0, z) * cellSize + originPos;
+        return new Vector3(x, y, 0) * cellSize + originPos;
     }
 
     private void GetXZ(Vector3 worldPosition, out int x, out int y)
     {
         x = Mathf.FloorToInt((worldPosition - originPos).x / cellSize);
-        y = Mathf.FloorToInt((worldPosition - originPos).z / cellSize);
+        y = Mathf.FloorToInt((worldPosition - originPos).y / cellSize);
     }
 
     public void SetValue(Vector3 worldPostion, int setValue)
@@ -86,7 +90,7 @@ public class Grid : MonoBehaviour
         {
             for(int j = 0; j < gridArray.GetLength(1); j++)
             {
-                textMeshes[i,j] = CreateWorldText(gridArray[i,j].ToString(), GetWorldPosition(i,j) + new Vector3(cellSize, 0 ,cellSize) * .5f ,20,Color.white, TextAnchor.MiddleCenter);
+                textMeshes[i,j] = CreateWorldText(gridArray[i,j].ToString(), GetWorldPosition(i,j) + new Vector3(cellSize, cellSize,0) * .5f ,20,Color.white, TextAnchor.MiddleCenter);
                 Debug.DrawLine(GetWorldPosition(i,j), GetWorldPosition(i,j+1), Color.white, 100f);
                 Debug.DrawLine(GetWorldPosition(i, j), GetWorldPosition(i + 1, j), Color.white, 100f);
             }
@@ -109,7 +113,7 @@ public class Grid : MonoBehaviour
         Transform transform = go.transform;
         transform.SetParent(transform.parent, false);
         transform.localPosition = localPosition;
-        transform.Rotate(90, 0, 0);
+        transform.Rotate(0, 0, 0);
 
         TextMesh tm = go.GetComponent<TextMesh>();
         tm.anchor = textAncor;

@@ -5,10 +5,14 @@ using UnityEngine;
 public class GridTesting : MonoBehaviour
 {
     Grid grid;
+    [SerializeField] HeatmapVisual heatMap;
+    [SerializeField] int width, height ,cellSize;
     // Start is called before the first frame update
     void Start()
     {
-        grid = new Grid(10, 10,5, new Vector3(-25,0,-25));
+        grid = new Grid(width, height, cellSize, new Vector3(-(width*cellSize) / 2, -(height * cellSize) / 2, 0));
+
+        heatMap.SetGrid(grid);
     }
 
     private void Update()
@@ -16,7 +20,7 @@ public class GridTesting : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            position.y = 0f;
+            position.z = 0f;
 
             int gridValue = grid.GetValue(position);
 
@@ -24,4 +28,6 @@ public class GridTesting : MonoBehaviour
 
         }
     }
+
+
 }
